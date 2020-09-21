@@ -76,9 +76,16 @@ exports.requireSignin = (req, res, next) => {
   return res.status(400).json({ message: "Authorization denied" });
 };
 
-exports.categoryCerateAccess = (req, res, next) => {
+exports.categoryCreateUserAccess = (req, res, next) => {
+  if (req.user.role !== "user") {
+    return res.status(400).json({ message: "Access denied login as user to create." });
+  }
+  next();
+};
+
+exports.categoryCreateAccess = (req, res, next) => {
   if (req.user.role !== "admin") {
-    return res.status(400).json({ message: "Access denied" });
+    return res.status(400).json({ message: "Access denied login as admin to create." });
   }
   next();
 };

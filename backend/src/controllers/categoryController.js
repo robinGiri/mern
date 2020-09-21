@@ -22,13 +22,39 @@ exports.createCategory = (req, res) => {
   });
 };
 
+function createCatrgotyList(category, parentId = null) {
+  categoryList = [];
+  let categories;
+  if (parentId == null) {
+    categories = category.filter((cate) => cate.parentId == undefined);
+  } else {
+    categories = category.filter((cate) => cate.parentId == parentId);
+  }
+  // console.log(categories)
+  categories.forEach(cate => {
+    // console.log(cate)
+
+    categoryList.push({
+      _id: cate._id,
+      name: cate.name,
+      slug: cate.slug,
+      children: createCatrgotyList(category, cate._id),
+    });
+    console.log(categoryList)
+
+  })
+  return categoryList;
+}
+
 exports.getCategories = (req, res) => {
   Category.find({}).exec((error, category) => {
     if (error) {
       return res.status(400).json({ error });
     }
     if (category) {
-      return res.status(200).json({ category });
+      const categoryList = createCatrgotyList(category);
+      console.log(createCatrgotyList(category))
+      return res.status(200).json({ categoryList });
     }
   });
 };

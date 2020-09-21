@@ -5,7 +5,7 @@ const {
 } = require("../controllers/categoryController");
 const {
   requireSignin,
-  categoryCerateAccess,
+  categoryCreateAccess,
 } = require("../controllers/adminController");
 const router = express.Router();
 
@@ -13,7 +13,7 @@ const router = express.Router();
 router.post(
   "/category/create",
   requireSignin,
-  categoryCerateAccess,
+  categoryCreateAccess,
   createCategory
 );
 router.get("/category/getcategory", getCategories);
